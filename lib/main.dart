@@ -151,7 +151,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       onPressed: () {
                         Navigator.of(context).push(
                           MaterialPageRoute(
-                            builder: (context) => Add(),
+                            builder: (context) => Admin(),
                           ),
                         );
                       },

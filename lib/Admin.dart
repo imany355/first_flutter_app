@@ -42,7 +42,7 @@ class AdminState extends State<Admin> {
               ),
             ),
           ],
-          title: Text("Travels")),
+          title: Text('Manage Vacation')),
       body: Column(
         mainAxisSize: MainAxisSize.min,
         // ignore: prefer_const_literals_to_create_immutables
@@ -65,13 +65,33 @@ class AdminState extends State<Admin> {
             icon: Icons.airplanemode_active_rounded,
             color: Colors.blue.shade100,
           ),
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {},
-          ),
-          IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {},
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              CircleAvatar(
+                radius: 30,
+                backgroundColor: Color(0xff77d9e6),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.delete,
+                    color: Colors.red,
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+              CircleAvatar(
+                radius: 30,
+                backgroundColor: Color(0xff77d9e6),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.add,
+                    color: Colors.red,
+                  ),
+                  onPressed: () {},
+                ),
+              ),
+            ],
           ),
         ],
       ),
@@ -104,11 +124,11 @@ class FlightCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             IconButton(
-              icon: Icon(Icons.add),
+              icon: Icon(Icons.delete),
               onPressed: () {},
             ),
             IconButton(
-              icon: Icon(Icons.add),
+              icon: Icon(Icons.edit),
               onPressed: () {},
             ),
           ],
