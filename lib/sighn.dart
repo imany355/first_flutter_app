@@ -64,6 +64,8 @@ class _SignUpPageState extends State<SignUpPage> {
                           TextStyle(color: Color.fromARGB(255, 34, 2, 73))),
                 ),
               ),
+
+              
               Container(
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextField(

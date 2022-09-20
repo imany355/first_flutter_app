@@ -96,6 +96,7 @@ class FlightCard extends StatelessWidget {
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
+            if (false) FlutterLogo(),
             IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
