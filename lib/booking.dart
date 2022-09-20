@@ -278,6 +278,7 @@ class FlightCard extends StatelessWidget {
             ],
           ),
         ),
+        
         Padding(
           padding: const EdgeInsets.only(right: 20.0),
           child: Column(
