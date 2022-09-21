@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, duplicate_ignore
 
 import 'package:first_flutter_app/widgets/flutter_ticket_widget.dart';
 import 'package:flutter/material.dart';
@@ -46,7 +46,6 @@ class BookingState extends State<Booking> {
           title: Text("Travels")),
       body: Column(
         mainAxisSize: MainAxisSize.min,
-        // ignore: prefer_const_literals_to_create_immutables
         children: <Widget>[
           FlightCard(
             title: "From your heart to my heart",
@@ -240,7 +239,13 @@ class FlightCard extends StatelessWidget {
                                   textStyle:
                                       const TextStyle(color: Colors.black)),
                               child: const Text('Exit'),
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (context) => Booking(),
+                                  ),
+                                );
+                              },
                             ),
                           ],
                         ),
