@@ -60,23 +60,12 @@ class AdminState extends State<Admin> {
                   FlightCard(
                     trip: trip,
                     icon: Icons.airplanemode_active_rounded,
-                    color: Colors.green.shade100,
+                    color: Colors.red.shade100,
                   ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    CircleAvatar(
-                      radius: 30,
-                      backgroundColor: Color(0xff77d9e6),
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.delete,
-                          color: Colors.red,
-                        ),
-                        onPressed: () {},
-                      ),
-                    ),
                     CircleAvatar(
                       radius: 30,
                       backgroundColor: Color(0xff77d9e6),

@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, duplicate_ignore
 
-import 'package:first_flutter_app/helpers/db_helper.dart';
+import 'package:first_flutter_app/helpers/db_helper.dart' show DBHelper;
 import 'package:first_flutter_app/models/trip.dart';
 import 'package:first_flutter_app/widgets/flutter_ticket_widget.dart';
 import 'package:flutter/material.dart';
@@ -52,7 +52,6 @@ class BookingState extends State<Booking> {
             valueListenable: DBHelper.tripsBox.listenable(),
             builder: (context, box, widget) {
               final trips = box.values.map((e) => TripModel.fromJson(e));
-
               return Column(
                 mainAxisSize: MainAxisSize.min,
                 children: <Widget>[

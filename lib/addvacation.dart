@@ -78,7 +78,6 @@ class AddState extends State<Add> {
               Container(
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextField(
-                  obscureText: true,
                   controller: timeController,
                   decoration: const InputDecoration(
                     focusColor: Color.fromARGB(5, 223, 65, 21),
@@ -88,9 +87,16 @@ class AddState extends State<Add> {
                 ),
               ),
               Container(
+                  alignment: Alignment.centerLeft,
+                  padding: const EdgeInsets.all(10),
+                  child: const Text(
+                    'Add No ',
+                    style: TextStyle(
+                        fontSize: 20, color: Color.fromARGB(255, 11, 14, 103)),
+                  )),
+              Container(
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextField(
-                  obscureText: true,
                   controller: noController,
                   decoration: const InputDecoration(
                     focusColor: Color.fromARGB(5, 223, 65, 21),
@@ -103,17 +109,6 @@ class AddState extends State<Add> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundColor: Color(0xff77d9e6),
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.delete,
-                        color: Colors.red,
-                      ),
-                      onPressed: () {},
-                    ),
-                  ),
                   CircleAvatar(
                     radius: 30,
                     backgroundColor: Color(0xff77d9e6),

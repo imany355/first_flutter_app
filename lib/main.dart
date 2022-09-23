@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, unnecessary_new
 
 import 'package:first_flutter_app/Admin.dart';
 import 'package:first_flutter_app/Ticket.dart';
@@ -63,15 +63,16 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           child: ListView(
             children: <Widget>[
               Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10),
-                  child: const Text(
-                    'Booking App',
-                    style: TextStyle(
-                        color: Color(0xff351184),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 30),
-                  )),
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(10),
+                child: const Text(
+                  'Booking App',
+                  style: TextStyle(
+                      color: Color(0xff351184),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 30),
+                ),
+              ),
               Container(
                 padding: const EdgeInsets.all(10),
                 child: TextField(
@@ -108,9 +109,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                 ),
               ),
               Container(
-                  height: 50,
-                  padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  child: ElevatedButton(
+                height: 50,
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                         shape: new RoundedRectangleBorder(
                           borderRadius: new BorderRadius.circular(50.0),
@@ -139,8 +140,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           (route) => false,
                         );
                       }
-                    },
-                  )),
+                    }),
+              ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
