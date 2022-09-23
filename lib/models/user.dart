@@ -1,4 +1,4 @@
-import 'package:first_flutter_app/models/trip.dart';
+import 'trip.dart';
 
 class UserModel {
   final String username;
@@ -27,8 +27,9 @@ class UserModel {
       username: data['username'],
       password: data['password'],
       type: data['type'],
-      trips:
-          data['trips'].map((e) => TripModel.fromJson(e)).toList<TripModel>(),
+      trips: (data['trips'] as List)
+          .map<TripModel>((e) => TripModel.fromJson(e))
+          .toList(),
     );
   }
 }

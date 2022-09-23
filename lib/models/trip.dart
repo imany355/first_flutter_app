@@ -24,4 +24,16 @@ class TripModel {
       no: data['no'],
     );
   }
+
+  @override
+  operator ==(Object other) {
+    if (other is TripModel && other.no == no) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  @override
+  int get hashCode => no.hashCode;
 }

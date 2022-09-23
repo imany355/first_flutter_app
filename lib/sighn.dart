@@ -1,9 +1,10 @@
-import 'package:first_flutter_app/Admin.dart';
-import 'package:first_flutter_app/booking.dart';
-import 'package:first_flutter_app/helpers/db_helper.dart';
-import 'package:first_flutter_app/models/user.dart';
 import 'package:flutter/material.dart';
+
+import 'Admin.dart';
+import 'booking.dart';
+import 'helpers/db_helper.dart';
 import 'main.dart';
+import 'models/user.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({Key? key}) : super(key: key);
@@ -110,11 +111,14 @@ class _SignUpPageState extends State<SignUpPage> {
                           print(validty);
                         });
                       }),
-                  Text("USER",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 20,
-                          color: Color.fromARGB(255, 242, 242, 246)))
+                  Text(
+                    "USER",
+                    style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                      color: Color.fromARGB(255, 242, 242, 246),
+                    ),
+                  )
                 ],
               ),
               TextButton(
@@ -138,13 +142,31 @@ class _SignUpPageState extends State<SignUpPage> {
                         textStyle: const TextStyle(color: Colors.black)),
                     child: const Text('Sign Up'),
                     onPressed: () {
+                      if (nameController.text.isEmpty ||
+                          passwordController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Enter username and password'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                        return;
+                      }
+
                       DBHelper.saveUser(UserModel(
                         username: nameController.text,
                         password: passwordController.text,
                         type: validty,
                       ));
 
-                      if (DBHelper.loggedInUser?.type == 'user') {
+                      if (DBHelper.loggedInUser == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Already registered'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      } else if (DBHelper.loggedInUser?.type == 'user') {
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                             builder: (context) => const Booking(),

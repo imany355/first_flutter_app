@@ -2,9 +2,9 @@
 
 import 'package:first_flutter_app/addvacation.dart';
 import 'package:first_flutter_app/helpers/db_helper.dart';
+import 'package:first_flutter_app/main.dart';
 import 'package:first_flutter_app/models/trip.dart';
 import 'package:flutter/material.dart';
-import 'package:first_flutter_app/main.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 
 class Admin extends StatefulWidget {
@@ -36,6 +36,7 @@ class AdminState extends State<Admin> {
                   Icons.logout_rounded,
                 ),
                 onPressed: () {
+                  DBHelper.loggedInUser = null;
                   Navigator.of(context).pushAndRemoveUntil(
                     MaterialPageRoute(
                       builder: (context) => const MyApp(),

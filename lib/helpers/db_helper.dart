@@ -1,6 +1,7 @@
-import 'package:first_flutter_app/models/trip.dart';
-import 'package:first_flutter_app/models/user.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+
+import '../models/trip.dart';
+import '../models/user.dart';
 
 class DBHelper {
   static UserModel? loggedInUser;
@@ -14,6 +15,12 @@ class DBHelper {
   }
 
   static void saveUser(UserModel user) async {
+    if (usersBox.containsKey(user.username)) return;
+    usersBox.put(user.username, user.toJson());
+    loggedInUser = user;
+  }
+
+  static void updateUser(UserModel user) async {
     usersBox.put(user.username, user.toJson());
     loggedInUser = user;
   }
@@ -37,8 +44,14 @@ class DBHelper {
     tripsBox.delete(trip.no);
   }
 
-  static void addTripToLoggedinUser(TripModel trip) async {
+  static void addTripToLoggedUser(TripModel trip) async {
     loggedInUser!.trips = [...loggedInUser!.trips, trip];
-    saveUser(loggedInUser!);
+    updateUser(loggedInUser!);
+  }
+
+  static void removeTripFromLoggedUser(TripModel trip) async {
+    loggedInUser!.trips =
+        loggedInUser!.trips.where((element) => element != trip).toList();
+    updateUser(loggedInUser!);
   }
 }

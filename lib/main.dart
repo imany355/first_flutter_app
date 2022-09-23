@@ -1,14 +1,10 @@
 // ignore_for_file: prefer_const_constructors, unnecessary_new
 
 import 'package:first_flutter_app/Admin.dart';
-import 'package:first_flutter_app/Ticket.dart';
-import 'package:first_flutter_app/addvacation.dart';
 import 'package:first_flutter_app/booking.dart';
 import 'package:first_flutter_app/helpers/db_helper.dart';
 import 'package:first_flutter_app/sighn.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/gestures.dart';
-import 'package:hive_flutter/hive_flutter.dart';
 
 Future<void> main() async {
   await DBHelper.init();
@@ -120,12 +116,29 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         textStyle: const TextStyle(color: Colors.black)),
                     child: const Text('Login'),
                     onPressed: () {
+                      if (nameController.text.isEmpty ||
+                          passwordController.text.isEmpty) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Enter username and password'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                        return;
+                      }
                       DBHelper.getUser(
                         nameController.text,
                         passwordController.text,
                       );
 
-                      if (DBHelper.loggedInUser?.type == 'user') {
+                      if (DBHelper.loggedInUser == null) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Wrong username or Password'),
+                            backgroundColor: Colors.red,
+                          ),
+                        );
+                      } else if (DBHelper.loggedInUser?.type == 'user') {
                         Navigator.of(context).pushAndRemoveUntil(
                           MaterialPageRoute(
                             builder: (context) => const Booking(),
