@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, duplicate_ignore
 
+import 'package:first_flutter_app/helpers/db_helper.dart';
+import 'package:first_flutter_app/models/trip.dart';
 import 'package:first_flutter_app/widgets/flutter_ticket_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:first_flutter_app/main.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class Booking extends StatefulWidget {
   const Booking({Key? key}) : super(key: key);
@@ -14,7 +17,7 @@ class BookingState extends State<Booking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
+        appBar: AppBar(
           backgroundColor: Color(0xff77d9e6),
           actions: [
             Padding(
@@ -43,44 +46,36 @@ class BookingState extends State<Booking> {
               ),
             ),
           ],
-          title: Text("Travels")),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          FlightCard(
-            title: "From your heart to my heart",
-            subtitle: '8:30 PM',
-            icon: Icons.airplanemode_active_rounded,
-            color: Colors.green.shade100,
-          ),
-          FlightCard(
-            title: "From Jeddah to Khartoum",
-            subtitle: '8:30 PM',
-            icon: Icons.airplanemode_active_rounded,
-            color: Colors.red.shade100,
-          ),
-          FlightCard(
-            title: "From Khartoum to Canada",
-            subtitle: '8:30 PM',
-            icon: Icons.airplanemode_active_rounded,
-            color: Colors.blue.shade100,
-          ),
-        ],
-      ),
-    );
+          title: Text("Welcome, ${DBHelper.loggedInUser?.username}"),
+        ),
+        body: ValueListenableBuilder(
+            valueListenable: DBHelper.tripsBox.listenable(),
+            builder: (context, box, widget) {
+              final trips = box.values.map((e) => TripModel.fromJson(e));
+
+              return Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  for (final trip in trips)
+                    FlightCard(
+                      trip: trip,
+                      icon: Icons.airplanemode_active_rounded,
+                      color: Colors.green.shade100,
+                    ),
+                ],
+              );
+            }));
   }
 }
 
 class FlightCard extends StatelessWidget {
   const FlightCard({
     super.key,
-    required this.title,
-    required this.subtitle,
+    required this.trip,
     required this.icon,
     required this.color,
   });
-  final String title;
-  final String subtitle;
+  final TripModel trip;
   final IconData icon;
   final Color color;
 
@@ -231,7 +226,10 @@ class FlightCard extends StatelessWidget {
                                   textStyle:
                                       const TextStyle(color: Colors.black)),
                               child: const Text('Confirm'),
-                              onPressed: () {},
+                              onPressed: () {
+                                DBHelper.addTripToLoggedinUser(trip);
+                                Navigator.of(context).pop();
+                              },
                             ),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
@@ -240,11 +238,7 @@ class FlightCard extends StatelessWidget {
                                       const TextStyle(color: Colors.black)),
                               child: const Text('Exit'),
                               onPressed: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (context) => Booking(),
-                                  ),
-                                );
+                                Navigator.of(context).pop();
                               },
                             ),
                           ],
@@ -259,10 +253,10 @@ class FlightCard extends StatelessWidget {
         ),
         leading: Icon(icon, color: Colors.cyan, size: 45),
         title: Text(
-          title,
+          trip.title,
           style: TextStyle(fontSize: 20),
         ),
-        subtitle: Text(subtitle),
+        subtitle: Text(trip.time),
       ),
     );
   }

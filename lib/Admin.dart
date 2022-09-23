@@ -1,7 +1,11 @@
 // ignore_for_file: prefer_const_constructors, e
 
+import 'package:first_flutter_app/addvacation.dart';
+import 'package:first_flutter_app/helpers/db_helper.dart';
+import 'package:first_flutter_app/models/trip.dart';
 import 'package:flutter/material.dart';
 import 'package:first_flutter_app/main.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 
 class Admin extends StatefulWidget {
   const Admin({Key? key}) : super(key: key);
@@ -43,58 +47,58 @@ class AdminState extends State<Admin> {
             ),
           ],
           title: Text('Manage Vacation')),
-      body: Column(
-        mainAxisSize: MainAxisSize.min,
-        // ignore: prefer_const_literals_to_create_immutables
-        children: <Widget>[
-          FlightCard(
-            title: "From your heart to my heart",
-            subtitle: '8:30 PM',
-            icon: Icons.airplanemode_active_rounded,
-            color: Colors.green.shade100,
-          ),
-          FlightCard(
-            title: "From Jeddah to Khartoum",
-            subtitle: '8:30 PM',
-            icon: Icons.airplanemode_active_rounded,
-            color: Colors.red.shade100,
-          ),
-          FlightCard(
-            title: "From Khartoum to Canada",
-            subtitle: '8:30 PM',
-            icon: Icons.airplanemode_active_rounded,
-            color: Colors.blue.shade100,
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.end,
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              CircleAvatar(
-                radius: 30,
-                backgroundColor: Color(0xff77d9e6),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.delete,
-                    color: Colors.red,
+      body: ValueListenableBuilder(
+          valueListenable: DBHelper.tripsBox.listenable(),
+          builder: (context, box, widget) {
+            final trips = box.values.map((e) => TripModel.fromJson(e));
+
+            return Column(
+              mainAxisSize: MainAxisSize.min,
+              // ignore: prefer_const_literals_to_create_immutables
+              children: <Widget>[
+                for (final trip in trips)
+                  FlightCard(
+                    trip: trip,
+                    icon: Icons.airplanemode_active_rounded,
+                    color: Colors.green.shade100,
                   ),
-                  onPressed: () {},
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: [
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Color(0xff77d9e6),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.delete,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {},
+                      ),
+                    ),
+                    CircleAvatar(
+                      radius: 30,
+                      backgroundColor: Color(0xff77d9e6),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.add,
+                          color: Colors.red,
+                        ),
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => Add(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-              CircleAvatar(
-                radius: 30,
-                backgroundColor: Color(0xff77d9e6),
-                child: IconButton(
-                  icon: Icon(
-                    Icons.add,
-                    color: Colors.red,
-                  ),
-                  onPressed: () {},
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
+              ],
+            );
+          }),
     );
   }
 }
@@ -102,13 +106,11 @@ class AdminState extends State<Admin> {
 class FlightCard extends StatelessWidget {
   const FlightCard({
     super.key,
-    required this.title,
-    required this.subtitle,
+    required this.trip,
     required this.icon,
     required this.color,
   });
-  final String title;
-  final String subtitle;
+  final TripModel trip;
   final IconData icon;
   final Color color;
 
@@ -125,20 +127,28 @@ class FlightCard extends StatelessWidget {
           children: [
             IconButton(
               icon: Icon(Icons.delete),
-              onPressed: () {},
+              onPressed: () {
+                DBHelper.delTrip(trip);
+              },
             ),
             IconButton(
               icon: Icon(Icons.edit),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => Add(trip: trip),
+                  ),
+                );
+              },
             ),
           ],
         ),
         leading: Icon(icon, color: Colors.cyan, size: 45),
         title: Text(
-          title,
+          trip.title,
           style: TextStyle(fontSize: 20),
         ),
-        subtitle: Text(subtitle),
+        subtitle: Text(trip.time),
       ),
     );
   }

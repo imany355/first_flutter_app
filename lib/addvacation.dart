@@ -1,19 +1,30 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:first_flutter_app/booking.dart';
+import 'package:first_flutter_app/helpers/db_helper.dart';
+import 'package:first_flutter_app/models/trip.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 
 class Add extends StatefulWidget {
-  const Add({Key? key}) : super(key: key);
-
+  const Add({Key? key, this.trip}) : super(key: key);
+  final TripModel? trip;
   @override
   State<Add> createState() => AddState();
 }
 
 class AddState extends State<Add> {
-  TextEditingController nameController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  TextEditingController titleController = TextEditingController();
+  TextEditingController timeController = TextEditingController();
+  TextEditingController noController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    titleController.text = widget.trip?.title ?? '';
+    timeController.text = widget.trip?.time ?? '';
+    noController.text = widget.trip?.no ?? '';
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,27 +38,29 @@ class AddState extends State<Add> {
           child: ListView(
             children: <Widget>[
               Container(
-                  alignment: Alignment.center,
-                  padding: const EdgeInsets.all(10),
-                  child: const Text(
-                    'Your Vacation',
-                    style: TextStyle(
-                        color: Color.fromARGB(255, 9, 13, 97),
-                        fontWeight: FontWeight.w500,
-                        fontSize: 30),
-                  )),
+                alignment: Alignment.center,
+                padding: const EdgeInsets.all(10),
+                child: const Text(
+                  'Your Vacation',
+                  style: TextStyle(
+                      color: Color.fromARGB(255, 9, 13, 97),
+                      fontWeight: FontWeight.w500,
+                      fontSize: 30),
+                ),
+              ),
               Container(
-                  alignment: Alignment.centerLeft,
-                  padding: const EdgeInsets.all(10),
-                  child: const Text(
-                    'Add Location',
-                    style: TextStyle(
-                        fontSize: 20, color: Color.fromARGB(255, 11, 14, 103)),
-                  )),
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.all(10),
+                child: const Text(
+                  'Add Location',
+                  style: TextStyle(
+                      fontSize: 20, color: Color.fromARGB(255, 11, 14, 103)),
+                ),
+              ),
               Container(
                 padding: const EdgeInsets.all(10),
                 child: TextField(
-                  controller: nameController,
+                  controller: titleController,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(20))),
@@ -66,7 +79,19 @@ class AddState extends State<Add> {
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextField(
                   obscureText: true,
-                  controller: passwordController,
+                  controller: timeController,
+                  decoration: const InputDecoration(
+                    focusColor: Color.fromARGB(5, 223, 65, 21),
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(20))),
+                  ),
+                ),
+              ),
+              Container(
+                padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                child: TextField(
+                  obscureText: true,
+                  controller: noController,
                   decoration: const InputDecoration(
                     focusColor: Color.fromARGB(5, 223, 65, 21),
                     border: OutlineInputBorder(
@@ -97,7 +122,14 @@ class AddState extends State<Add> {
                         Icons.add,
                         color: Colors.red,
                       ),
-                      onPressed: () {},
+                      onPressed: () {
+                        DBHelper.saveTrip(TripModel(
+                          title: titleController.text,
+                          time: timeController.text,
+                          no: noController.text,
+                        ));
+                        Navigator.of(context).pop();
+                      },
                     ),
                   )
                 ],

@@ -1,4 +1,7 @@
+import 'package:first_flutter_app/Admin.dart';
 import 'package:first_flutter_app/booking.dart';
+import 'package:first_flutter_app/helpers/db_helper.dart';
+import 'package:first_flutter_app/models/user.dart';
 import 'package:flutter/material.dart';
 import 'main.dart';
 
@@ -12,7 +15,7 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   TextEditingController nameController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
-  String? validty;
+  String validty = 'user';
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +23,8 @@ class _SignUpPageState extends State<SignUpPage> {
       decoration: const BoxDecoration(
         image: DecorationImage(
           image: NetworkImage(
-              'https://i.pinimg.com/564x/cf/45/fc/cf45fce9246a7990d5f16a7d49514671.jpg'),
+            'https://i.pinimg.com/564x/cf/45/fc/cf45fce9246a7990d5f16a7d49514671.jpg',
+          ),
           fit: BoxFit.cover,
         ),
       ),
@@ -64,8 +68,6 @@ class _SignUpPageState extends State<SignUpPage> {
                           TextStyle(color: Color.fromARGB(255, 34, 2, 73))),
                 ),
               ),
-
-              
               Container(
                 padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                 child: TextField(
@@ -84,11 +86,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Radio(
-                      value: "Admin",
+                      value: "admin",
                       groupValue: validty,
                       onChanged: (val) {
                         setState(() {
-                          validty = val;
+                          validty = val!;
                           print(validty);
                         });
                       }),
@@ -104,7 +106,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       groupValue: validty,
                       onChanged: (val) {
                         setState(() {
-                          validty = val;
+                          validty = val!;
                           print(validty);
                         });
                       }),
@@ -134,15 +136,29 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         primary: const Color.fromARGB(255, 206, 64, 185),
                         textStyle: const TextStyle(color: Colors.black)),
-                    child: const Text('Sign In'),
+                    child: const Text('Sign Up'),
                     onPressed: () {
-                      Navigator.of(context).pushAndRemoveUntil(
-                        MaterialPageRoute(
-                          builder: (context) => const Booking(),
-                        ),
-                        (route) => false,
-                      );
-                      ;
+                      DBHelper.saveUser(UserModel(
+                        username: nameController.text,
+                        password: passwordController.text,
+                        type: validty,
+                      ));
+
+                      if (DBHelper.loggedInUser?.type == 'user') {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const Booking(),
+                          ),
+                          (route) => false,
+                        );
+                      } else if (DBHelper.loggedInUser?.type == 'admin') {
+                        Navigator.of(context).pushAndRemoveUntil(
+                          MaterialPageRoute(
+                            builder: (context) => const Admin(),
+                          ),
+                          (route) => false,
+                        );
+                      }
                     },
                   )),
               Row(
