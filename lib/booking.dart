@@ -59,7 +59,7 @@ class BookingState extends State<Booking> {
                     FlightCard(
                       trip: trip,
                       icon: Icons.airplanemode_active_rounded,
-                      color: Colors.green.shade100,
+                      color: Colors.red.shade100,
                     ),
                 ],
               );
